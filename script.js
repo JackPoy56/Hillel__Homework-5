@@ -1,17 +1,6 @@
-const groupOfStudents = [];
-const NUMBER_OF_MARKS = 5;
-let groupAverage;
-let bestStudent;
-let listOfDebtors;
+const groupOfStudents = getGroupOfStudents();
 
 function main() {
-    let numberOfStudents; 
-    
-    do {
-        numberOfStudents = +prompt('Яка кількість студентів в групі?', 'Кількість в числах');
-    } while (numberOfStudents != numberOfStudents || numberOfStudents === 0);
-
-    getGroupOfStudents(numberOfStudents);
     addMarks(groupOfStudents);
 
     loop: do {
@@ -25,8 +14,7 @@ function main() {
         if (operation > 0 && operation < 7){
             switch (operation) {
                 case 1:
-                    getBestStudent(groupOfStudents); 
-                    alert(`Кращій учень: ${bestStudent.name} середній бал - ${bestStudent.avgMarks}.`);                     
+                    getBestStudent(groupOfStudents);                                        
                     break;
 
                 case 2:
@@ -46,8 +34,7 @@ function main() {
                     break;
 
                 case 4:
-                    getListOfDebtors(groupOfStudents);
-                    alert(listOfDebtors);
+                    getListOfDebtors(groupOfStudents);                    
                     break;
                     
                 case 5:
@@ -60,8 +47,16 @@ function main() {
 
 main();
 
-function getGroupOfStudents(number) {
-    for (let i = 0; number > 0 && i < number; i++) { 
+function getGroupOfStudents() {
+    let numberOfStudents; 
+    
+    do {
+        numberOfStudents = +prompt('Яка кількість студентів в групі?', 'Кількість в числах');
+    } while (numberOfStudents != numberOfStudents || numberOfStudents === 0);
+
+    const groupOfStudents = [];
+
+    for (let i = 0; numberOfStudents > 0 && i < numberOfStudents; i++) { 
         let students = {
             name: prompt(`Введіть П.І.Б ${i + 1} студента!`),           
             marks: [],
@@ -75,10 +70,14 @@ function getGroupOfStudents(number) {
         }
 
         groupOfStudents.push(students);
-    }     
+    }    
+    
+    return groupOfStudents;
 }
 
 function addMarks(studentGroup) {
+    const NUMBER_OF_MARKS = 5;
+
     for (let i of studentGroup){                
         do {
             i['marks'].push(Math.ceil(Math.random(13) * 10));
@@ -88,13 +87,15 @@ function addMarks(studentGroup) {
 
 function getBestStudent(studentGroup) {
     getAvgMarksStudents(groupOfStudents);
-    bestStudent = studentGroup[0];
+    let bestStudent = studentGroup[0];
 
     for (let i = 1; i < studentGroup.length; i++){
         if (bestStudent.avgMarks < studentGroup[i].avgMarks){
             bestStudent = studentGroup[i];
         }        
     } 
+
+    alert(`Кращій учень: ${bestStudent.name} середній бал - ${bestStudent.avgMarks}.`);   
 }
 
 function getGradeList(studentGroup) {
@@ -126,25 +127,24 @@ function getAvgMarksStudents (studentGroup) {
 }
 
 function getListOfDebtors(studentGroup) {
-    getGroupAverage(groupOfStudents);
-    listOfDebtors = [];     
-
-    for (let i = 0; i < studentGroup.length; i++){
-        if (studentGroup[i].avgMarks <= groupAverage){
-            listOfDebtors.push(studentGroup[i]);
-        }
-    }  
-}
-
-function getGroupAverage(studentGroup) {
     getAvgMarksStudents (groupOfStudents);
+
+    let listOfDebtors = [];  
     let sumGgoupMarks = 0;
 
     for (let i = 0; i < studentGroup.length ; i++){
             sumGgoupMarks = sumGgoupMarks + studentGroup[i].avgMarks;
         }
 
-    groupAverage = sumGgoupMarks / (studentGroup.length);
+    let groupAverage = sumGgoupMarks / (studentGroup.length);
+
+    for (let i = 0; i < studentGroup.length; i++){
+        if (studentGroup[i].avgMarks <= groupAverage){
+            listOfDebtors.push(studentGroup[i]);
+        }
+    }  
+
+    alert(listOfDebtors);
 }
 
 function getNewStudents(student) {    
@@ -159,6 +159,8 @@ function getNewStudents(student) {
         if (newStudents.name === '' || newStudents.name === null){
             newStudents.name = 'Анонім';
         }
+
+        const NUMBER_OF_MARKS = 5;
 
         do {
             newStudents['marks'].push(Math.ceil(Math.random(13) * 10));
