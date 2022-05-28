@@ -1,53 +1,3 @@
-function main() {
-    addMarks(groupOfStudents);
-
-    loop: do {
-        const operation = +prompt(`Оберіть операцію:
-        1. Отримати самого успішного студента. 
-        2. Відсортувати студентів за успішністю.
-        3. Розрахувати середню оцінку для кожного студента та роздрукувати.
-        4. Отримати студентів на відрахування.
-        5. Додати новенького в групу.
-        6. Долучити незрозуміло кого.`)
-
-        if (operation > 0 && operation < 7){
-            switch (operation) {
-                case 1:
-                    getBestStudent(groupOfStudents);                                        
-                    break;
-
-                case 2:
-                    getGradeList(groupOfStudents);
-                    alert(groupOfStudents);
-                    break;
-
-                case 3:
-                    getAvgMarksStudents(groupOfStudents);
-                    alert(groupOfStudents);
-                    if (confirm(`Бажаєте роздрукувати?(повтор операцій буде не можливий)`)){
-                        groupOfStudents.join('');
-                        document.body.innerHTML += '<p>' + groupOfStudents + '</p>';
-                        window.print();
-                        break loop;
-                    }
-                    break;
-
-                case 4:
-                    getListOfDebtors(groupOfStudents);                    
-                    break;
-                    
-                case 5:
-                    getNewStudents(groupOfStudents);
-                    break;
-
-                case 6:
-                    addRandomStudent(groupOfStudents);
-                    break;
-            } 
-        }
-    } while (confirm(`Повторити операції?`));
-}
-
 function getGroupOfStudents() {
     let numberOfStudents; 
     
@@ -110,8 +60,7 @@ function addMarks(studentGroup) {
     }   
 }
 
-function getBestStudent(studentGroup) {
-    getAvgMarksStudents(groupOfStudents);
+function getBestStudent(studentGroup, avgMarksGroup) {
     let bestStudent = studentGroup[0];
 
     for (let i = 1; i < studentGroup.length; i++){
@@ -123,9 +72,7 @@ function getBestStudent(studentGroup) {
     alert(`Кращій учень: ${bestStudent.name} середній бал - ${bestStudent.avgMarks}.`);   
 }
 
-function getGradeList(studentGroup) {
-    getAvgMarksStudents(groupOfStudents);
-    
+function getGradeList(studentGroup, avgMarksGroup) {    
     for (let i = 0, endI = studentGroup.length - 1; i < endI; i++) {
         for (let j = 0, endJ = endI - i; j < endJ; j++) {
             if (studentGroup[j].avgMarks < studentGroup[j + 1].avgMarks) {
@@ -151,9 +98,7 @@ function getAvgMarksStudents (studentGroup) {
     } 
 }
 
-function getListOfDebtors(studentGroup) {
-    getAvgMarksStudents (groupOfStudents);
-
+function getListOfDebtors(studentGroup, avgMarksGroup) {
     let listOfDebtors = [];  
     let sumGgoupMarks = 0;
 
